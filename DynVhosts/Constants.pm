@@ -40,33 +40,33 @@ $constants{'ROTATE_MONTHLY'} = 4;
 $constants{'ROTATE_YEARLY'}  = 5;
 
 our %byte_sizes = (
-	'B' => $constants{'BYTE'},
-	'K' => $constants{'KILOBYTE'},
-	'M' => $constants{'MEGABYTE'},
-	'G' => $constants{'GIGABYTE'},
-	'T' => $constants{'TERABYTE'},
-	'P' => $constants{'PETABYTE'},
+    'B' => $constants{'BYTE'},
+    'K' => $constants{'KILOBYTE'},
+    'M' => $constants{'MEGABYTE'},
+    'G' => $constants{'GIGABYTE'},
+    'T' => $constants{'TERABYTE'},
+    'P' => $constants{'PETABYTE'},
 );
 
 our @valid_byte_sizes = sort { $byte_sizes{$a} <=> $byte_sizes{$b} } keys %byte_sizes;
 
 our %rotate_types = (
-	'filesize'   => $constants{'ROTATE_ONSIZE'},
-	'never'      => $constants{'ROTATE_NEVER'},
-	'daily'      => $constants{'ROTATE_DAILY'},
-	'weekly'     => $constants{'ROTATE_WEEKLY'},
-	'monthly'    => $constants{'ROTATE_MONTHLY'},
-	'yearly'     => $constants{'ROTATE_YEARLY'},
+    'filesize'   => $constants{'ROTATE_ONSIZE'},
+    'never'      => $constants{'ROTATE_NEVER'},
+    'daily'      => $constants{'ROTATE_DAILY'},
+    'weekly'     => $constants{'ROTATE_WEEKLY'},
+    'monthly'    => $constants{'ROTATE_MONTHLY'},
+    'yearly'     => $constants{'ROTATE_YEARLY'},
 );
 
 our @valid_rotations = sort { $rotate_types{$a} <=> $rotate_types{$b} } keys(%rotate_types);
 
 our %rotate_templates = (
-	$constants{'ROTATE_ONSIZE'}  => 'filesize-%Y%m%d.%T', # filesize-20090128.15:50:32
-	$constants{'ROTATE_DAILY'}   => 'daily-%Y%m%d',       # daily-20090128
-	$constants{'ROTATE_WEEKLY'}  => 'weekly-%U.%Y',       # weekly-4.2009
-	$constants{'ROTATE_MONTHLY'} => 'monthly-%h.%Y',      # monthly-Jan.2009
-	$constants{'ROTATE_YEARLY'}  => 'yearly-%Y',          # yearly-2009
+    $constants{'ROTATE_ONSIZE'}  => 'filesize-%Y%m%d.%T', # filesize-20090128.15:50:32
+    $constants{'ROTATE_DAILY'}   => 'daily-%Y%m%d',       # daily-20090128
+    $constants{'ROTATE_WEEKLY'}  => 'weekly-%U.%Y',       # weekly-4.2009
+    $constants{'ROTATE_MONTHLY'} => 'monthly-%h.%Y',      # monthly-Jan.2009
+    $constants{'ROTATE_YEARLY'}  => 'yearly-%Y',          # yearly-2009
 );
 
 our @EXPORT = (keys %constants, qw(@valid_rotations %rotate_types %rotate_templates %byte_sizes @valid_byte_sizes));

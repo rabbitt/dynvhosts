@@ -16,8 +16,8 @@ use Data::Dumper;
 use Apache2::Const -compile => ':common';
 
 sub handler {
-	my $r = shift;
-	return Apache2::Const::DECLINED;
+    my $r = shift;
+    return Apache2::Const::DECLINED;
 }
 
 1;

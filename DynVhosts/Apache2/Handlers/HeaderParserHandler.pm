@@ -19,8 +19,8 @@ use Fcntl qw(:flock);
 use File::Spec::Functions qw(catfile);
 
 sub handler {
-	my $r = shift;
-	return Apache2::Const::DECLINED;
+    my $r = shift;
+    return Apache2::Const::DECLINED;
 }
 
 1;

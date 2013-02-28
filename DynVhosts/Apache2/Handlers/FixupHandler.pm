@@ -17,8 +17,8 @@ use Apache2::Const -compile => ':common';
 use Apache2::Const -compile => qw(DIR_MAGIC_TYPE OK DECLINED);
 
 sub handler {
-	my $r = shift;
-	return Apache2::Const::DECLINED;
+    my $r = shift;
+    return Apache2::Const::DECLINED;
 }
 
 1;
