@@ -1,0 +1,72 @@
+<IfDefine DYNAMIC_VHOSTS>
+	# Use name-based virtual hosting.
+	NameVirtualHost 1.2.3.4:80
+	Listen 1.2.3.4:80
+
+	AcceptPathInfo On
+	UseCanonicalName Off
+
+	LogFormat "%{Host}i %h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" dynvhost-combined
+	RewriteLock /var/www/locks/rewrite.lock
+
+	<VirtualHost 1.2.3.4:80>
+		# load up dynamic module processing
+		PerlLoadModule  DynVhosts::Apache2;
+
+		DynVhosts_State            On
+		DynVhosts_Logging          On
+		DynVhosts_DomainList       "/var/www/dynamic-vhosts"
+		DynVhosts_DocumentRoot     "/var/www/dynamic-vhosts/{{domain}}/{{*<0}}/htdocs"
+		DynVhosts_DomainCatchAll   "/var/www/dynamic-vhosts/{{domain}}/__catchall__/htdocs"
+		DynVhosts_LoggingBase      "logs/dynamic-vhosts/{{domain}}/{{*}}"
+		DynVhosts_LoggingSchedule  "weekly"
+		DynVhosts_LoggingFormat    "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\""
+		DynVhosts_LoggingMaxFilesOpen 10
+
+		CustomLog logs/dynamic-vhosts/combined-access.log dynvhost-combined
+		ErrorLog  logs/dynamic-vhosts/error.log
+
+		HostnameLookups Off
+		ServerSignature Off
+
+		<IfModule mpm_peruser_module>
+			ServerEnvironment apache apache
+		</IfModule>
+
+		<Directory "/var/www/dynamic-vhosts">
+			Options -Indexes FollowSymLinks MultiViews
+			AllowOverride All
+			Order allow,deny
+			Allow from all
+		</Directory>
+
+		<DirectoryMatch "^/var/www/dynamic-vhosts/[^/]+/cgi-bin">
+			AllowOverride None
+			Options ExecCGI
+			Order allow,deny
+			Allow From All
+		</DirectoryMatch>
+
+		## URL Rewrite ##
+		RewriteEngine On
+		RewriteOptions inherit
+
+		# force all domains to www.domain.com
+		RewriteCond %{HTTP_HOST} !^$
+		RewriteCond %{HTTP_HOST} !^unreachablecode.com$
+		RewriteCond %{HTTP_HOST} !^thankyoufeet.com$
+		RewriteCond %{HTTP_HOST} ^([a-z0-9-]+)\.([a-z]{3,4})$ [NC]
+		RewriteRule ^/(.*)$ http://www.%{HTTP_HOST}/$1 [L,R=301]
+
+		## AListApart Anti-Leech for Images ##
+		# RewriteCond %{REQUEST_FILENAME} .*jpg$|.*gif$|.*png$ [NC]
+		# RewriteCond %{HTTP_REFERER} !^$ 
+		# RewriteCond %{HTTP_REFERER} !%{HTTP_HOST} [NC] 
+		# RewriteCond %{HTTP_REFERER} !friendlysite\.com [NC]  
+		# RewriteCond %{HTTP_REFERER} !google\. [NC] 
+		# RewriteCond %{HTTP_REFERER} !search\?q=cache [NC]
+		# RewriteRule (.*) /showpic.php?pic=$1
+		# RewriteRule (.*) http://.../some.gif
+
+	</VirtualHost>
+</IfDefine>

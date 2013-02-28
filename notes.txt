@@ -1,0 +1,2 @@
+using 'PerlOptions +GlobalRequest' in apache config allows global access to the request record in code, e.g.:
+	my $r = Apache2::RequestUtil->request;
